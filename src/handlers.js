@@ -151,7 +151,7 @@ class sphere_Handler {
 			dx = x - dots[i].xProject;
 			dy = y - dots[i].yProject;
 			
-			if (Math.sqrt((dx * dx) + (dy * dy)) < (dots[i].sizeProjection * dots[i].radius) && (dots[i].type == "DOT" || dots[i].type == "TERRAIN")) {
+			if (Math.sqrt((dx * dx) + (dy * dy)) < (dots[i].sizeProjection * dots[i].radius) && (dots[i].type == "DOT")) {
     			
     			if (dots[i].id == 0) continue;
     			
@@ -160,7 +160,6 @@ class sphere_Handler {
 					dots[dots[0].PRIME].c = "black";
     			}
     			
-    			if (dots[i].type == "TERRAIN") dots[i].texture1 = iSELECT;
     			if (dots[i].type == "DOT") dots[i].c = "red";
     			    			
     			dots[0].PRIME = dots[i].id;
@@ -220,37 +219,6 @@ function keyboard_Handler() {
 	
 	if (event.key == "t") {
 	}
-	
-	if (dots[0].PRIME != -1) {
-
-		if (event.key == "o") dots[dots[0].PRIME].texture0 = iOCEAN;
-		if (event.key == "m") dots[dots[0].PRIME].texture0 = iMOUNTAIN;
-		if (event.key == "d") dots[dots[0].PRIME].texture0 = iDESERT;
-		if (event.key == "f") dots[dots[0].PRIME].texture0 = iFOREST;
-		if (event.key == "b") dots[dots[0].PRIME].texture0 = iBARREN;
-	}
-}
-
-//***************** Texture Loaders
-function loadTextures() {
-
-	var iOCEAN = new Image();
-	iOCEAN.src = "./textures/blue.png";
-
-	var iSELECT = new Image();
-	iSELECT.src = "./textures/select.png";
-
-	var iFOREST = new Image();
-	iFOREST.src = "./textures/green.png";
-
-	var iMOUNTAIN = new Image();
-	iMOUNTAIN.src = "./textures/gray.png";
-
-	var iDESERT = new Image();
-	iDESERT.src = "./textures/tan.png";
-
-	var iBARREN = new Image();
-	iBARREN.src = "./textures/brown.png";
 }
 
 function loadDots() {
@@ -273,22 +241,4 @@ function loadDots() {
 	dots.push(new Dot(dots.length, "orange", "DOT", 10, GLOBE_RADIUS * Math.sin(0) * Math.cos(0), GLOBE_RADIUS * Math.sin(0) * Math.sin(0), (GLOBE_RADIUS * Math.cos(0)) + GLOBE_CENTER_Z));
 	dots.push(new Dot(dots.length, "orange", "DOT", 10, GLOBE_RADIUS * Math.sin(Math.PI) * Math.cos(0), GLOBE_RADIUS * Math.sin(Math.PI) * Math.sin(0), (GLOBE_RADIUS * Math.cos(Math.PI)) + GLOBE_CENTER_Z));
 
-
-//*****************
-/*
-	let plus = 0;
-
-	for (let p = 0; p < Math.PI; p +=Math.PI/(GLOBE_RADIUS/14)) {
-
-		for (let t = -Math.PI; t < Math.PI; t+=plus) {
-		
-			const x = GLOBE_RADIUS * Math.sin(p) * Math.cos(t);
-			const y = GLOBE_RADIUS * Math.sin(p) * Math.sin(t);
-			const z = (GLOBE_RADIUS * Math.cos(p)) + GLOBE_CENTER_Z;
-			
-			dots.push(new Dot(dots.length, "black", "TERRAIN", 25, x, y, z));
-			plus = (2*Math.PI)/Math.round((2 * Math.PI * Math.sqrt((x*x) + (y*y)))/42);			
-		}
-	}
-*/
 }
