@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<script src="./src/entities.js"></script>
+<script src="./src/handlers.js"></script>
+
+<head>
+<link rel="stylesheet" type="text/css" href="./src/style.css">
+
+<script>
+
+function displayText() {
+
+    let diXYZ = 2*GLOBE_RADIUS*Math.asin(Math.sqrt(((dots[0].actual.x - dots[0].origin.x)*(dots[0].actual.x - dots[0].origin.x))+((dots[0].actual.y - dots[0].origin.y)*(dots[0].actual.y - dots[0].origin.y))+(((dots[0].actual.z-GLOBE_CENTER_Z) - (dots[0].origin.z-GLOBE_CENTER_Z))*((dots[0].actual.z-GLOBE_CENTER_Z) - (dots[0].origin.z-GLOBE_CENTER_Z))))/(2*GLOBE_RADIUS));
+  	let phi = Math.acos((dots[0].actual.z - GLOBE_CENTER_Z)/ GLOBE_RADIUS);
+  	let theta = Math.atan2(dots[0].actual.y, dots[0].actual.x);
+  
+	phi = Number(Math.round(phi+'e9')+'e-9');
+	theta = Number(Math.round(theta+'e9')+'e-9');
+  
+	display.innerHTML = "Sphere Engine<BR>";
+    display.innerHTML += "<BR>Real Distance from Origin: " + diXYZ;
+    display.innerHTML += "<BR>Calculated Distance from Origin: " + dots[0].di;
+  	display.innerHTML += "<BR>";
+	display.innerHTML += "<BR>Bearing: " + dots[0].brng;
+	display.innerHTML += "<BR>";
+	display.innerHTML += "<BR>Destination PHI: " + phi;
+	display.innerHTML += "<BR>Destination THETA: " + theta;
+	display.innerHTML += "<BR>";
+	display.innerHTML += "<BR>Calculated  PHI: " + dots[0].phi;
+	display.innerHTML += "<BR>Calculated  THETA: " + dots[0].theta;
+	display.innerHTML += "<BR>";
+	display.innerHTML += "<BR>Actual X: " + dots[0].actual.x;
+	display.innerHTML += "<BR>Actual Y: " + dots[0].actual.y;
+	display.innerHTML += "<BR>Actual Z: " + (dots[0].actual.z-GLOBE_CENTER_Z);
+	display.innerHTML += "<BR>";	
+	if (Number(Math.round(dots[0].phi+'e9')+'e-9') != phi) display.innerHTML += "<BR>PHI OUT OF SYNC";
+	if (Number(Math.round(dots[0].theta+'e9')+'e-9') != theta) display.innerHTML += "<BR>THETA OUT OF SYNC";
+}
+</script>
+</head>
+
+<body onkeypress="keyboard_Handler()">
+
+<div id="display"></div>
+<canvas id="scene"></canvas>
+
+<script>
+//***************** Setup Element Contexts
+const display = document.getElementById("display");	// Get the DIV element from the DOM
+const canvas = document.getElementById('scene');	// Get the canvas element from the DOM
+const ctx = canvas.getContext('2d');				// Store the 2D context
+const dots = []; 									// Store every particle in this array - will be replaced by more efficient data structure
+								
+//***************** Setup Global Canvas Variables
+let width = canvas.offsetWidth; // Width of the scene
+let height = canvas.offsetHeight; // Height of the scene
+
+let PERSPECTIVE = width * 0.8; // The field of view of our 3D scene
+let PROJECTION_CENTER_X = width / 2; // x center of the canvas
+let PROJECTION_CENTER_Y = height / 2; // y center of the canvas
+
+let GLOBE_RADIUS = width / 3; // Radius of the globe based on the canvas width
+let GLOBE_CENTER_Z = -GLOBE_RADIUS; // Z value of the globe center
+
+//***************** Setup UX Handlers
+var sUI = new sphere_Handler();
+element_Handler(canvas, true);
+element_Handler(display, false);
+loadDots();
+//loadTextures();
+
+// Listen to resize events
+window.addEventListener('resize', onResize);
+
+// Start Sphere Engine
+onResize();
+engine();
+render();
+</script>
+
+</body>
+</html>
