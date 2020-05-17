@@ -44,17 +44,6 @@ function render() {
 	ctx.closePath();
 	ctx.stroke();
 
-/*	Depth Sorting - will create again later, ***** when re-implementing terrains, render terrains first, then movable dots
-	for (let i = 0; i < dots.length; i++) {
-		dots[i].project();
-	}
-  
-	// Sort dots array based on their projected size
-	dots.sort((dot1, dot2) => {
-		return dot1.sizeProjection - dot2.sizeProjection;
-	});
-*/
-
 	// Loop through the dots array and draw every dot		
 	for (var i = 0; i < dots.length; i++) {
 		dots[i].draw();		
@@ -151,16 +140,13 @@ class sphere_Handler {
 			dx = x - dots[i].xProject;
 			dy = y - dots[i].yProject;
 			
-			if (Math.sqrt((dx * dx) + (dy * dy)) < (dots[i].sizeProjection * dots[i].radius) && (dots[i].type == "DOT")) {
+			if (Math.sqrt((dx * dx) + (dy * dy)) < (dots[i].sizeProjection * dots[i].radius)) {
     			
     			if (dots[i].id == 0) continue;
     			
-    			if (dots[0].PRIME != -1) {
-					dots[dots[0].PRIME].texture1 = null;
-					dots[dots[0].PRIME].c = "black";
-    			}
+    			if (dots[0].PRIME != -1) dots[dots[0].PRIME].c = "black";
     			
-    			if (dots[i].type == "DOT") dots[i].c = "red";
+    			dots[i].c = "red";
     			    			
     			dots[0].PRIME = dots[i].id;
 
